@@ -47,9 +47,14 @@ public:
 	void pop();
 	void shift();
 	void removeAtIndex(int pos);
-	void sum(int num);
+	int Average(int num);
 	int length();
+	int CountEvenNumbers();
+	void PowerNumber(int num);
+	void SumPowerNumbers(int num1);
 };
+
+
 
 List::~List()
 {
@@ -231,10 +236,63 @@ void List::display()
 	}
 }
 
-void List::sum(int num)
+//Exercise 1
+int List::CountEvenNumbers()
+{
+	int count = 0;
+	Node* aux;
+	if (head == NULL) {
+		cout << "Empty Here";
+	}
+	else
+	{
+		aux = head;
+		while (aux)
+		{
+			if (aux->value % 2 == 0)
+			{
+				count++;
+			}
+
+			aux = aux->NextNode;
+		}
+	}
+	return count;
+}
+
+//Exercise 2
+int List::Average(int num)
 {
 	if (num == 0) {
 		cout << "Sum is Zero";
+	}
+	else
+	{
+		int length = 0;
+		while (num != 0)
+		{
+			int temp = num % 10;
+			unshift(temp);
+			num = num / 10;
+			length++;
+		}
+		
+		int sum = 0;
+		NodeFirst aux = head;
+		while (aux != NULL)
+		{
+			sum = sum + aux->value;
+			aux = aux->NextNode;
+		}
+		return sum / length;
+	}
+	return 0;
+}
+
+//Exercise 3
+void List::PowerNumber(int num) {
+	if (num == 0) {
+		cout << "num is Zero";
 	}
 	else
 	{
@@ -244,16 +302,76 @@ void List::sum(int num)
 			unshift(temp);
 			num = num / 10;
 		}
-		int suma = 0;
+
 		NodeFirst aux = head;
 		while (aux != NULL)
 		{
-			suma = suma + aux->value;
+			aux->value = (aux->value * aux->value);
 			aux = aux->NextNode;
 		}
-		cout << suma << endl;
+	}
+}
+
+//Exercise 4
+void List::SumPowerNumbers(int num1) {
+
+	int sum = 0;
+	int times = 1;
+
+	if (num1 == 0) {
+		cout << "num1 is Zero";
 	}
 
+
+	if (!isEmpty()) {
+
+		NodeFirst aux = head;
+		sum = aux->value;
+		aux = aux->NextNode;
+		times = aux->value ;
+	}
+
+	while (num1 != 0 )
+	{
+		int temp1 = num1 % 10; 
+
+		if (isEmpty()) {
+			if (temp1 % 2 == 0)
+			{
+				sum += temp1 * temp1 * temp1;
+
+			}
+			else {
+				times *= temp1 * temp1;
+
+			}
+		}
+		else {
+			if (temp1 % 2 != 0)
+			{
+				sum += temp1 * temp1 * temp1;
+
+			}
+			else {
+				times *= temp1 * temp1 ;
+
+			}
+		}
+		 
+		num1 = num1 / 10; 
+	}
+	if (isEmpty()) {
+
+		unshift(sum);
+		push(times);
+	}
+	else {
+		NodeFirst aux = head;
+		aux->value =  sum;
+		aux = aux->NextNode;
+		aux->value = times;
+	}
+	
 }
 
 void List::next()
@@ -276,16 +394,42 @@ void List::last()
 int main()
 {
 	List Lista;// Init as NULL
+	
 	cout << "***************************************************************************************" << endl;
-	Lista.unshift(20);
-	Lista.display();
-	Lista.unshift(2);
-	Lista.display();
+
 	Lista.push(10);
+	Lista.push(7);
+	Lista.push(9);
+	Lista.push(20);
+
 	Lista.display();
+
+	cout << ("La cantidad de numeros pares es "  );
+	cout << Lista.CountEvenNumbers();
+	cout << endl;
+
+	cout << "***************************************************************************************" << endl;
+	Lista.~List();
+
+	cout << ("El promedio del los digitos del numero 123 es :");
+	cout << Lista.Average(123);
+
+	cout << "***************************************************************************************" << endl;
+	Lista.~List();
+	cout << ("El inserta los digitos del numero 123 y eleva al cuadrado :");
+	Lista.PowerNumber(123);
+	Lista.display();
+
+	cout << "***************************************************************************************" << endl;
+	Lista.~List();
+	cout << ("El inserta 2 numeros :");
+	Lista.SumPowerNumbers( 2345);
+	Lista.SumPowerNumbers(4567);
+	Lista.display();
+
 	cout << endl;
 	cout << endl;
-	cout << Lista.length();
+
 	Lista.~List();
 	cin.get();
 	return 0;
